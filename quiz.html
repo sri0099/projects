@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .left-side, .right-side {
+            width: 50%;
+            height: 100%;
+            position: relative;
+        }
+
+        .left-side {
+            background-image: url('p.jpg'); /* Replace with your image URL */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .text-content {
+            font-size: 60px; /* Increased font size */
+            font-weight: bold;
+            margin: 0;
+            position: relative;
+            left: -20%;
+        }
+
+        .text-content span {
+            display: block;
+        }
+
+        .right-side {
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .login-box {
+    width: 80%;
+    max-width: 300px; /* Reduced width */
+    padding: 20px; /* Decreased padding */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin: 100px auto; /* Centered vertically */
+    text-align: center;
+}
+        }
+
+        .login-box h2 {
+            color: black;
+            font-size: 28px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .welcome-text {
+            position: absolute;
+            top: 10%; /* Moved up */
+            text-align: center;
+            font-size: 40px; /* Adjusted font size */
+            color: black;
+            font-weight: bold;
+            letter-spacing: 2px; /* Added letter spacing */
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap; /* Prevent text wrapping */
+            text-transform: uppercase; /* Make text uppercase */
+        }
+
+        .input-label {
+            font-size: 20px; /* Increased font size for labels */
+            color: black;
+            display: block;
+            margin-bottom: 10px; /* Increased space below label */
+            text-align: left;
+        }
+
+        .required {
+            color: red;
+            font-size: 16px;
+        }
+
+        input[type="text"], input[type="password"] {
+            display: block;
+            width: 90%; /* Smaller width */
+            padding: 10px 10px; /* Reduced padding */
+            border: none;
+            font-size: 18px; /* Slightly smaller font size */
+            box-sizing: border-box;
+            margin-bottom: 10px; /* Adjusted space below input fields */
+            outline: none;
+            background: transparent;
+            border-bottom: 2px solid black;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus {
+            border: none;
+            box-shadow: 0 0 10px #FF8C00; /* Orange glow on focus */
+        }
+
+        button {
+            padding: 15px;
+            width: 3.3in; /* Set width to 3.3 inches */
+            border: none;
+            background-color: #FFA07A; /* Light orange background */
+            color: black;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            display: block;
+            margin: 10px auto; /* Center button horizontally */
+        }
+
+        button:hover {
+            background-color: #FF8C00; /* Darker orange on hover */
+        }
+
+        .register-link {
+            margin-top: 15px; /* Space above the link */
+            color: black; /* Text color */
+            font-size: 16px; /* Font size */
+        }
+
+        .register-link a {
+            color: #FFA07A; /* Same color as the login button */
+            text-decoration: underline; /* Underline */
+        }
+
+        .remember-me {
+            display: flex;
+            justify-content: space-between; /* Space between checkbox and text */
+            align-items: center;
+            font-size: 16px; /* Font size for remember me */
+            margin: 10px 0; /* Space above and below */
+        }
+
+        .forgot-password {
+            font-size: 16px; /* Font size for forgot password */
+            color: #FFA07A; /* Same color as the login button */
+            cursor: pointer;
+        }
+
+        .divider {
+            width: 100%;
+            height: 1px;
+            background-color: #ccc; /* Light gray line */
+            margin: 20px 0; /* Space above and below the line */
+        }
+
+        .timer {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            color: black;
+        }
+
+        .quiz-container {
+            display: none; /* Hide quiz container initially */
+            padding: 20px;
+            text-align: center;
+        }
+
+        .instructions-container {
+            display: none; /* Hide instructions initially */
+            padding: 20px;
+            text-align: center;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="left-side">
+        <div class="text-content">
+            <span>All the best</span>
+            <span>for quiz!</span>
+        </div>
+    </div>
+
+    <div class="right-side">
+        <div class="welcome-text">
+            WELCOME TO ZVBT        </div>
+        <div class="login-box" id="login">
+            <h2>Login</h2>
+            <label class="input-label" for="username">Username <span class="required">*</span></label>
+            <input type="text" id="username" required>
+            <label class="input-label" for="password">Password <span class="required">*</span></label>
+            <input type="password" id="password" required>
+            <div class="remember-me">
+                <label>
+                    <input type="checkbox"> Remember Me
+                </label>
+                <span class="forgot-password">Forgot Password?</span>
+            </div>
+            <button onclick="login()">Login</button>
+            <div class="divider"></div>
+            <p id="login-error" style="color: red; display:none;">Invalid username or password</p>
+            <div class="register-link">
+                Didn't have an account? <a href="#">Register here</a>
+            </div>
+        </div>
+        <div class="quiz-container" id="quiz">
+            <div class="timer" id="timer">Time left: 15:00</div>
+            <h2 id="question-title"></h2>
+            <div id="question"></div>
+            <button id="prevBtn" onclick="prevQuestion()">Previous</button>
+            <button id="nextBtn" onclick="nextQuestion()">Next</button>
+            <button id="submitBtn" onclick="submitQuiz()">Submit</button>
+            <div id="result" style="display:none;">
+                <h3>Your Score: <span id="score"></span></h3>
+            </div>
+        </div>
+        <div class="instructions-container" id="instructions">
+            
+        </div>
+    </div>
+
+    <script>
+        const correctUsername = "zenex";
+        const correctPassword = "zenex";
+        const quizData = [
+            { question: "What is the capital of France?", options: ["Paris", "London", "Berlin", "Madrid"], answer: 0 },
+            { question: "What is 2 + 2?", options: ["3", "4", "5", "6"], answer: 1 },
+            // Add more questions here up to 30
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedAnswers = [];
+        let timer; // Variable to store timer
+
+        function startTimer(duration) {
+            let timerDisplay = document.getElementById("timer");
+            let time = duration, minutes, seconds;
+            timer = setInterval(function () {
+                minutes = parseInt(time / 60, 10);
+                seconds = parseInt(time % 60, 10);
+
+                // Format time display
+                timerDisplay.textContent = `Time left: ${minutes < 10 ? "0" : ""}${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+
+                if (--time < 0) {
+                    clearInterval(timer);
+                    alert("Time's up!");
+                    submitQuiz(); // Automatically submit when time is up
+                }
+            }, 1000);
+        }
+
+        function login() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            if (username === correctUsername && password === correctPassword) {
+                window.location.href = 'instructions.html'; // Redirect to instructions page
+            } else {
+                document.getElementById("login-error").style.display = "block";
+            }
+        }
+
+        function startQuiz() {
+            document.getElementById("instructions").style.display = "none"; // Hide instructions
+            document.getElementById("quiz").style.display = "block"; // Show quiz
+            startTimer(15 * 60); // Start timer for 15 minutes
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const questionData = quizData[currentQuestion];
+            document.getElementById("question-title").innerText = `Question ${currentQuestion + 1}`;
+            const questionElement = document.getElementById("question");
+
+            let optionsHtml = '';
+            questionData.options.forEach((option, index) => {
+                optionsHtml += `<div><input type="radio" name="option" value="${index}" ${selectedAnswers[currentQuestion] === index ? "checked" : ""}> ${option}</div>`;
+            });
+
+            questionElement.innerHTML = `<p>${questionData.question}</p>` + optionsHtml;
+
+            document.getElementById("prevBtn").style.display = currentQuestion > 0 ? "inline" : "none";
+            document.getElementById("nextBtn").style.display = currentQuestion < quizData.length - 1 ? "inline" : "none";
+            document.getElementById("submitBtn").style.display = currentQuestion === quizData.length - 1 ? "inline" : "none";
+        }
+
+        function nextQuestion() {
+            saveAnswer();
+            if (currentQuestion < quizData.length - 1) {
+                currentQuestion++;
+                showQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            saveAnswer();
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion();
+            }
+        }
+
+        function saveAnswer() {
+            const options = document.getElementsByName("option");
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].checked) {
+                    selectedAnswers[currentQuestion] = parseInt(options[i].value);
+                }
+            }
+        }
+
+    </script>
+
+</body>
+</html>

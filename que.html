@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz: Computer Organization & C Language</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+
+        .container {
+            width: 60%;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .question {
+            margin: 20px 0;
+            text-align: left;
+            font-weight: bold;
+            font-size: 20px;
+            position: relative;
+        }
+
+        .option {
+            text-align: left;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #FFA07A;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #FF7F50;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .score-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        /* Initially hide the level heading */
+        #level-heading {
+            display: none;
+        }
+
+        /* Hide previous button initially */
+        #prevBtn {
+            display: none;
+        }
+
+        /* Hide question display initially */
+        #question-display {
+            display: none;
+        }
+
+        /* Timer styling */
+    /* Other styles remain unchanged */
+
+    /* Timer styling */
+    .timer {
+        color: green;
+        font-size: 24px; /* Increased font size */
+        font-weight: bold; /* Made bold */
+        position: absolute; /* Positioned relative to the question box */
+        top: -60px; /* Moved up approximately 3 inches */
+        right: 20px; /* Positioned on the right */
+    }
+
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 id="level-heading">Level 1: Computer Organization</h1>
+
+    <div class="question" id="question-display">
+        <div class="timer" id="timer">15:00</div>
+        <p id="question-text"></p>
+        <div id="options"></div>
+    </div>
+
+    <div class="button-container">
+        <button id="prevBtn" onclick="prevQuestion()">Previous Question</button>
+        <button id="nextBtn" onclick="nextQuestion()">Start Quiz</button>
+    </div>
+
+    <div class="score-container" id="score-container" style="display: none;">
+        <h1 id="final-message"></h1>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        { question: "1. The primary purpose of an operating system is:", options: ["A. To allow people to use the computer", "B. To make computers easier to use", "C. To make the most efficient use of the computer hardware", "D. All the above"], answer: 3 },
+       { question: "2. Which of the following is used in main memory?", options: ["A. DDR", "B. DRAM", "C. SRAM", "D. PRAM"], answer: 1 },
+        { question: "3. The Central Processing Unit (CPU) consists of:", options: ["A. ALU and Control unit only", "B. ALU, Control unit and Registers only", "C. ALU, Control unit and System bus only", "D. ALU, Control unit, Registers, and Internal bus"], answer: 3 },
+        { question: "4. ___ is a special type of memory that works like both RAM and ROM.", options: ["A. Register memory", "B. Secondary memory", "C. Flash memory", "D. Cache memory"], answer: 2 },
+        { question: "5. CD-ROM is a __.", options: ["A. MP3 file", "B. Microprocessor", "C. Magnetic disk", "D. Storage medium"], answer: 3 },
+        { question: "6. 1 gigabyte is equal to:", options: ["A. 1391 megabytes", "B. 1024 kilobytes", "C. 1024 megabytes", "D. 1150 megabytes"], answer: 2 },
+        { question: "7. To reduce the memory access time we generally make use of:", options: ["A. SDRAM’s", "B. Heaps", "C. Cache’s", "D. Higher capacity RAM’s"], answer: 2 },
+        { question: "8. ____ are the different type/s of generating control signals:", options: ["A. Hardwired", "B. Micro-instruction", "C. Micro-programmed", "D. Both Micro-programmed and Hardwired"], answer: 3 },
+        { question: "9. In order to read multiple bytes of a row at the same time, we make use of:", options: ["A. Memory extension", "B. Cache", "C. Shift register", "D. Latch"], answer: 3 },
+        { question: "10. What does ISO stand for?", options: ["A. International Software Organisation", "B. Industrial Software Organisation", "C. International Standards Organisation", "D. Industrial Standards Organisation"], answer: 2 },      
+{ question: "1. Who is the father of C language?", options: ["A. Steve Jobs", "B. James Gosling", "C. Dennis Ritchie", "D. Rasmus Lerdorf"], answer: 2 },
+        { question: "2. What is the result of logical or relational expression in C?", options: ["A. True or False", "B. 0 or 1", "C. 0 if an expression is false and any positive number if an expression is true", "D. None of the mentioned"], answer: 1 },
+        { question: "3. Which of the following is not a valid C variable name?", options: ["A. int number", "B. float rate", "C. int variable_count", "D. int $main"], answer: 3 },
+        { question: "4. Which of the following return-type cannot be used for a function in C?", options: ["A. char *", "B. struct", "C. void", "D. None of the mentioned"], answer: 3 },
+        { question: "5. Which keyword is used to prevent any changes in the variable within a C program?", options: ["A. immutable", "B. mutable", "C. const", "D. volatile"], answer: 2 },
+        { question: "6. What is an example of iteration in C?", options: ["A. for", "B. while", "C. do-while", "D. all of the mentioned"], answer: 3 },
+        { question: "7. Which of the following typecasting is accepted by C language?", options: ["A. Widening conversions", "B. Narrowing conversions", "C. Widening & Narrowing conversions", "D. None of the mentioned"], answer: 2 },
+        { question: "8. Functions in C Language are always ___", options: ["A. Internal", "B. External", "C. Both Internal and External", "D. External and Internal are not valid terms for functions"], answer: 1 },
+{ question: "9. Which of the following is not a storage class in C?", options: ["A. Automatic", "B. Register", "C. Static", "D. Field"], answer: 3 },
+
+  { question: "10. All the key words in c are in______?", options: ["A. lowerCase letters", "B. UpperCase letters", "C. CamelCase letters", "D.None of the Mentioned"], answer: 0},
+
+ { question: "1. What is an operating system?", options: ["A. interface between the hardware and application programs", "B. collection of programs that manages hardware resources", "C. system service provider to the application programs", "D. all of the mentioned"], answer: 3 },
+    { question: "2. In Operating Systems, which of the following is/are CPU scheduling algorithms?", options: ["A. Priority", "B. Round Robin", "C. Shortest Job First", "D. All of the mentioned"], answer: 3 },
+    { question: "3. To access the services of the operating system, the interface is provided by the _____", options: ["A. Library", "B. System calls", "C. Assembly instructions", "D. API"], answer: 1 },
+    { question: "4. Which one of the following errors will be handled by the operating system?", options: ["A. lack of paper in printer", "B. connection failure in the network", "C. power failure", "D. all of the mentioned"], answer: 3 },
+    { question: "5. Which one of the following is not a real-time operating system?", options: ["A. RTLinux", "B. Palm OS", "C. QNX", "D. VxWorks"], answer: 1 },
+    { question: "6. In operating system, each process has its own ____", options: ["A. open files", "B. pending alarms, signals, and signal handlers", "C. address space and global variables", "D. all of the mentioned"], answer: 3 },
+    { question: "7. A deadlock avoidance algorithm dynamically examines the ____ to ensure that a circular wait condition can never exist.", options: ["A. operating system", "B. resources", "C. system storage state", "D. resource allocation state"], answer: 3 },
+    { question: "8. The information about all files is kept in ____", options: ["A. operating system", "B. separate directory structure", "C. swap space", "D. none of the mentioned"], answer: 1 },
+    { question: "9. Network operating system runs on _____", options: ["A. every system in the network", "B. server", "C. both server and every system in the network", "D. none of the mentioned"], answer: 1 },
+ { question: "10. In Unix, which system call creates the new process?", options: ["A. create", "B. fork", "C. new", "D. none of the mentioned"], answer: 1 },
+// Add more questions as needed
+    ];
+
+    let currentQuestionIndex = 0;
+    let userAnswers = [];
+    let score = 0;
+    let totalTime = 15 * 60; // 15 minutes in seconds
+    let timerInterval;
+
+    function displayQuestion() {
+        const question = questions[currentQuestionIndex];
+
+        // Show the level heading and question area
+        document.getElementById("level-heading").style.display = "block";
+        document.getElementById("question-display").style.display = "block";
+        
+        document.getElementById("question-text").innerText = question.question;
+        const optionsContainer = document.getElementById("options");
+        optionsContainer.innerHTML = "";
+
+        question.options.forEach((option, index) => {
+            const optionHTML = `
+                <div class="option">
+                    <input type="radio" name="option" value="${index}" ${userAnswers[currentQuestionIndex] === index ? 'checked' : ''}>
+                    ${option}
+                </div>
+            `;
+            optionsContainer.innerHTML += optionHTML;
+        });
+
+        document.getElementById("level-heading").innerText = getLevelHeading();
+        updateNavigationButtons();
+    }
+
+    function getLevelHeading() {
+        if (currentQuestionIndex < 10) {
+            return "Level 1: Computer Organization";
+        } else if (currentQuestionIndex < 20) {
+            return "Level 2: C Language";
+        } else {
+            return "Level 3: Operating Systems";
+        }
+    }
+
+    function nextQuestion() {
+        // If it's the start of the quiz, show the first question
+        if (document.getElementById("nextBtn").innerText === "Start Quiz") {
+            document.getElementById("nextBtn").innerText = "Next Question"; // Change button text
+            startTimer(); // Start the timer
+            displayQuestion();
+            return;
+        }
+
+        const selectedOption = document.querySelector('input[name="option"]:checked');
+        if (selectedOption) {
+            userAnswers[currentQuestionIndex] = parseInt(selectedOption.value);
+        }
+
+        // If the current question is the last one, change the Next button to Submit
+        if (currentQuestionIndex === questions.length - 1) {
+            displayScore();
+        } else if (currentQuestionIndex === questions.length - 2) {
+            currentQuestionIndex++;
+            document.getElementById("nextBtn").innerText = "Submit";
+            displayQuestion();
+        } else {
+            currentQuestionIndex++;
+            displayQuestion();
+        }
+    }
+
+    function prevQuestion() {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            displayQuestion();
+        }
+    }
+
+    function updateNavigationButtons() {
+        if (currentQuestionIndex === 0) {
+            document.getElementById("prevBtn").style.display = "none"; // Hide previous button on first question
+        } else {
+            document.getElementById("prevBtn").style.display = "inline"; // Show previous button otherwise
+        }
+    }
+
+    function displayScore() {
+        score = userAnswers.reduce((total, answer, index) => {
+            return total + (answer === questions[index].answer ? 1 : 0);
+        }, 0);
+
+        document.querySelector(".container").innerHTML = `
+            <h1 id="final-message">Your score is: ${score}/${questions.length}</h1>
+            <h1>${getFinalMessage(score / questions.length * 100)}</h1>
+        `;
+    }
+
+    function getFinalMessage(percentage) {
+        if (percentage >= 90) {
+            return "Congratulations!";
+        } else if (percentage >= 60) {
+            return "Well Done!";
+        } else {
+            return "Better Luck Next Time!";
+        }
+    }
+
+    // Timer functionality
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            let minutes = Math.floor(totalTime / 60);
+            let seconds = totalTime % 60;
+
+            // Update timer display
+            document.getElementById('timer').innerText = `${minutes}:${(seconds < 10 ? '0' : '')}${seconds}`;
+
+            // Format time as MM.SS for ticking effect
+            const tickingTime = (minutes * 60 + seconds).toFixed(2);
+            document.getElementById('timer').innerText = `${Math.floor(tickingTime / 60)}.${(tickingTime % 60).toFixed(0)}`;
+
+            // If time runs out, auto-submit the quiz
+            if (totalTime <= 0) {
+                clearInterval(timerInterval);
+                displayScore();
+            }
+
+            totalTime--;
+        }, 1000);
+    }
+
+</script>
+
+</body>
+</html>

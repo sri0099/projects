@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Instructions</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0; /* Light background color */
+        }
+
+        .container {
+            width: 80%;
+            max-width: 600px;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .start-button {
+            padding: 15px 30px;
+            background-color: #FFA07A; /* Button color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        .start-button:hover {
+            background-color: #FF8C00; /* Darker color on hover */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Quiz Instructions</h1>
+        <p>Welcome to the quiz! Please read the following instructions carefully:</p>
+        <p>1. You have 15 minutes to complete the quiz.</p>
+        <p>2. Answer all questions to the best of your ability.</p>
+        <p>3. Once you submit your answers, you cannot change them.</p>
+        <p>4. Good luck!</p>
+        <button class="start-button" onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <script>
+        function startQuiz() {
+            window.location.href = "que.html"; // Redirect to your quiz page
+        }
+    </script>
+
+</body>
+</html>
